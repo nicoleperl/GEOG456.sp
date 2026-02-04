@@ -1,0 +1,61 @@
+<html>
+    <head>
+        <title>HW3 Leaflet Map</title>
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+        crossorigin=""/>
+        <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+        crossorigin=""></script>
+        <script src="EXOTICS_PT.js" ></script>
+    </head>
+    <body>
+    Exotic Species Locations in Great Smoky Mountains National Park
+    <div id="mapid"></div>
+    
+    <style>
+        #mapid{ width: 900px; height: 500px; }
+    </style>
+    <script>  
+
+
+    var map = L.map('mapid').setView([35.6, -83.5], 10,[esri,natgeo]);
+
+var esri = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+	attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+});
+
+var natgeo = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer/tile/{z}/{y}/{x}', {
+	attribution: 'Tiles &copy; Esri &mdash; National Geographic, Esri, DeLorme, NAVTEQ, UNEP-WCMC, USGS, NASA, ESA, METI, NRCAN, GEBCO, NOAA, iPC',
+	maxZoom: 16
+});
+
+
+var animalIcon = L.icon({ 
+        iconUrl: 'icon.png', 
+        iconSize: [30,30],
+        popupAnchor: [0,0]
+        });
+
+        var customPopup = "<a href='https://public-nps.opendata.arcgis.com/datasets/nps::grsm-exotics/about?layer=0'>Exotic Species Locations in Great Smoky Mountains National Park</a><br/><img src='hog.jpg' width='100px'/>"; 
+
+var geojson = L.geoJSON(sites, {   // a
+    pointToLayer: function (feature, latlng) { // b
+    return L.marker(latlng, {icon: animalIcon});}}) // c
+    .bindPopup(customPopup) // d
+    .addTo(map); //c
+
+ var baseMaps = {
+  "ESRI Satellite": esri,
+  "National Geographic": natgeo
+};
+
+var overlayMaps = {
+  "Exotic Species Locations": geojson
+};
+
+var layerControl = L.control.layers(baseMaps, overlayMaps).addTo(map);
+    
+    </script>
+    </body>
+</html>
