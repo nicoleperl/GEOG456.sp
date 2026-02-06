@@ -37,13 +37,28 @@ var animalIcon = L.icon({
         popupAnchor: [0,0]
         });
 
-        var customPopup = "<a href='https://public-nps.opendata.arcgis.com/datasets/nps::grsm-exotics/about?layer=0'>Exotic Species Locations in Great Smoky Mountains National Park</a><br/><img src='hog.jpg' width='100px'/>"; 
 
-var geojson = L.geoJSON(sites, {   // a
-    pointToLayer: function (feature, latlng) { // b
-    return L.marker(latlng, {icon: animalIcon});}}) // c
-    .bindPopup(customPopup) // d
-    .addTo(map); //c
+var whatIsFeature; 
+var whatIsLayer;
+
+function onEachFeature(feature, layer) {
+    whatIsFeature = feature;
+    whatIsLayer = layer;
+
+    var customPopup = "<a href='https://public-nps.opendata.arcgis.com/datasets/nps::grsm-exotics/about?layer=0'>" + 
+                      feature.properties.LOCATION_DESCRIPTION + 
+                      "</a><br/><img src='hog.jpg' width='100px'/>";
+
+    layer.bindPopup(customPopup);
+}
+
+var geojson = L.geoJson(sites, {
+    pointToLayer: function (feature, latlng) { 
+        return L.marker(latlng, {icon: animalIcon});
+    },
+    onEachFeature: onEachFeature
+}).addTo(map);
+
 
  var baseMaps = {
   "ESRI Satellite": esri,
@@ -55,6 +70,9 @@ var overlayMaps = {
 };
 
 var layerControl = L.control.layers(baseMaps, overlayMaps).addTo(map);
+
+
+esri.addTo(map);
     
     </script>
     </body>
