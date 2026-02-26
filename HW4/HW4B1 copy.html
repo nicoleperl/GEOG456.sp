@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+
+/* style and html from https://www.w3schools.com/html/tryit.asp?filename=tryhtml_table_intro */
+table {
+  font-family: Tahoma, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+  border-radius: 8px; 
+  overflow: hidden; 
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 10px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+
+.high {
+  background-color: yellow;
+}
+.low {
+  background-color: gray;
+}
+</style>
+</head>
+<script src="data.js"></script>
+<body>
+
+<h2 style="font-family: 'Verdana', sans-serif; color: #007acc;" > How Someone Hiked 'Fuente de Otín Loop via Camino de Otín'</h2>
+
+<table id="mytable">
+  <tr>
+    <th>Segment ID</th>
+    <th>Time Crossed Segment</th>
+    <th>Elevation</th>
+  </tr>
+  
+</table>
+
+<script>
+
+function getBackgroundColor(d){
+  return d > 1000 ? 'yellow' : 'gray';
+}
+
+var x = document.getElementById('mytable')
+  
+  for (var i =0; i <data.features.length; i++){
+
+    var feature = data.features[i].properties;
+
+    var myNewRow = document.createElement('tr');
+    var myNewCell1 = document.createElement('td');
+    var myNewCell2 = document.createElement('td');
+    var myNewCell3 = document.createElement('td');
+
+    myNewCell1.innerHTML = feature.track_seg_point_id;
+    myNewCell2.innerHTML = feature.time;
+    myNewCell3.innerHTML = feature.ele;
+
+    myNewCell3.style.backgroundColor = getBackgroundColor(feature.ele);
+
+    myNewRow.append(myNewCell1);
+    myNewRow.append(myNewCell2);
+    myNewRow.append(myNewCell3);
+    x.append(myNewRow);
+
+  } // The loop ends 
+
+</script>
+
+</body>
+
+
+</html>
+
+
